@@ -10,22 +10,15 @@ class MenuItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'outlet_id',
-        'name',
+        'restaurant_id',
+        'item',
         'price',
         'image',
         'available',
     ];
 
-    public function outlet()
+    public function restaurant()
     {
-        return $this->belongsTo(Outlet::class);
-    }
-
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
+        return $this->belongsTo(Restaurant::class);
     }
 }
-
-

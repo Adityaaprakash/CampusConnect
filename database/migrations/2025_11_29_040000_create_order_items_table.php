@@ -14,18 +14,24 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('order_id')
-                ->constrained('food_orders')
-                ->onDelete('cascade');
-
-            $table->foreignId('menu_item_id')
-                ->constrained('menu_items')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('menu_item_id');
 
             $table->integer('qty');
             $table->integer('price'); // price per item at time of order
 
             $table->timestamps();
+
+            // Foreign keys added AFTER fields are declared
+            $table->foreign('order_id')
+                ->references('id')
+                ->on('food_orders')
+                ->onDelete('cascade');
+
+            $table->foreign('menu_item_id')
+                ->references('id')
+                ->on('menu_items')
+                ->onDelete('cascade');
         });
     }
 
@@ -37,5 +43,3 @@ return new class extends Migration
         Schema::dropIfExists('order_items');
     }
 };
-
-

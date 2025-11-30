@@ -5,44 +5,44 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\FoodOrder;
 use App\Models\MenuItem;
-use App\Models\Outlet;
+use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FoodController extends Controller
 {
     /**
-     * Food home page: hero banner + top outlets.
+     * Food home page: hero banner + top restaurants.
      */
     public function index()
     {
-        $outlets = Outlet::orderBy('name')->get();
+        $restaurants = Restaurant::orderBy('name')->get();
 
-        return view('food.index', compact('outlets'));
+        return view('food.index', compact('restaurants'));
     }
 
     /**
-     * List of all outlets (canteens).
+     * List of all restaurants (canteens).
      */
-    public function outlets()
+    public function restaurants()
     {
-        $outlets = Outlet::orderBy('name')->get();
+        $restaurants = Restaurant::orderBy('name')->get();
 
-        return view('food.outlets', compact('outlets'));
+        return view('food.restaurants', compact('restaurants'));
     }
 
     /**
-     * Menu page for a specific outlet.
+     * Menu page for a specific restaurant.
      */
-    public function menu(Outlet $outlet, Request $request)
+    public function menu(Restaurant $restaurant, Request $request)
     {
-        $query = $outlet->menuItems()->where('available', true);
+        $query = $restaurant->menuItems()->where('available', true);
 
-        // Very simple "low price first" ordering
+        // Sorting
         if ($request->get('sort') === 'price_asc') {
             $query->orderBy('price');
         } else {
-            $query->orderBy('name');
+            $query->orderBy('item');
         }
 
         $items = $query->get();
@@ -53,11 +53,11 @@ class FoodController extends Controller
         $user = Auth::user();
         $credits = $user?->credit_balance ?? 0;
 
-        return view('food.menu', compact('outlet', 'items', 'cart', 'cartTotal', 'credits'));
+        return view('food.menu', compact('restaurant', 'items', 'cart', 'cartTotal', 'credits'));
     }
 
     /**
-     * Add an item to cart (session).
+     * Add an item to cart.
      */
     public function addToCart(Request $request, MenuItem $menuItem)
     {
@@ -74,10 +74,10 @@ class FoodController extends Controller
         } else {
             $cart[$menuItem->id] = [
                 'menu_item_id' => $menuItem->id,
-                'name' => $menuItem->name,
+                'name' => $menuItem->item,
                 'price' => $menuItem->price,
                 'qty' => $qty,
-                'outlet_id' => $menuItem->outlet_id,
+                'restaurant_id' => $menuItem->restaurant_id,
             ];
         }
 
@@ -113,7 +113,7 @@ class FoodController extends Controller
     }
 
     /**
-     * Place an order from the cart.
+     * Place an order.
      */
     public function placeOrder(Request $request)
     {
@@ -132,12 +132,12 @@ class FoodController extends Controller
         $creditsAvailable = $user->credit_balance;
         $creditsToUse = min($data['credits_to_use'] ?? 0, $creditsAvailable, $cartTotal);
 
-        // Ensure all items are from the same outlet (for simplicity)
-        $outletId = collect($cart)->pluck('outlet_id')->unique()->first();
+        // Ensure all items belong to same restaurant
+        $restaurantId = collect($cart)->pluck('restaurant_id')->unique()->first();
 
         $order = FoodOrder::create([
             'user_id' => $user->id,
-            'outlet_id' => $outletId,
+            'restaurant_id' => $restaurantId,
             'total_amount' => $cartTotal,
             'credits_used' => $creditsToUse,
             'status' => 'received',
@@ -151,7 +151,6 @@ class FoodController extends Controller
             ]);
         }
 
-        // Clear cart
         session()->forget('cart');
 
         return redirect()
@@ -160,48 +159,15 @@ class FoodController extends Controller
     }
 
     /**
-     * Show order status.
+     * Order status page.
      */
     public function showOrder(FoodOrder $order)
     {
-        $this->authorizeViewOrder($order);
-
-        $order->load('items.menuItem', 'outlet');
+        $order->load('items.menuItem', 'restaurant');
 
         return view('food.order_show', compact('order'));
     }
 
-    /**
-     * Admin: list incoming orders for all outlets.
-     */
-    public function adminOrders()
-    {
-        $orders = FoodOrder::with('user', 'outlet')
-            ->orderByDesc('created_at')
-            ->paginate(20);
-
-        return view('food.admin_orders', compact('orders'));
-    }
-
-    /**
-     * Admin: update order status.
-     */
-    public function updateOrderStatus(Request $request, FoodOrder $order)
-    {
-        $data = $request->validate([
-            'status' => 'required|in:received,preparing,ready',
-        ]);
-
-        $order->update([
-            'status' => $data['status'],
-        ]);
-
-        return back()->with('success', 'Order status updated.');
-    }
-
-    /**
-     * Helper to calculate cart total.
-     */
     protected function calculateCartTotal(array $cart): int
     {
         $total = 0;
@@ -210,14 +176,5 @@ class FoodController extends Controller
         }
 
         return $total;
-    }
-
-    protected function authorizeViewOrder(FoodOrder $order): void
-    {
-        $user = Auth::user();
-
-        if ($user->id !== $order->user_id && $user->role !== 'admin') {
-            abort(403);
-        }
     }
 }

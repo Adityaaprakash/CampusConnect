@@ -15,16 +15,12 @@ use App\Http\Controllers\FoodController;
 |--------------------------------------------------------------------------
 | Redirect root "/" → Login page
 |--------------------------------------------------------------------------
-| If user is NOT logged in → show login page
-| If logged in → show home dashboard
 */
 Route::get('/', function () {
-
     if (auth()->check()) {
-        return view('home'); // logged-in users go to dashboard/home
+        return view('home');
     }
-
-    return redirect()->route('login'); // guests go to login page
+    return redirect()->route('login');
 })->name('home');
 
 /*
@@ -78,22 +74,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/rent/create', [RentController::class, 'create'])->name('rent.create');
     Route::post('/rent', [RentController::class, 'store'])->name('rent.store');
 
+    // ⭐️ FIX ADDED HERE → Missing rent.show route
+    Route::get('/rent/{rent}', [RentController::class, 'show'])->name('rent.show');
+
     /*
     | Food Ordering
     */
     Route::get('/food', [FoodController::class, 'index'])->name('food.index');
-    Route::get('/food/outlets', [FoodController::class, 'outlets'])->name('food.outlets');
-    Route::get('/food/outlets/{outlet}', [FoodController::class, 'menu'])->name('food.menu');
 
-    // Cart
+    Route::get('/food/restaurants', [FoodController::class, 'restaurants'])->name('food.restaurants');
+
+    Route::get('/food/restaurants/{restaurant}', [FoodController::class, 'menu'])->name('food.menu');
+
     Route::post('/food/menu-items/{menuItem}/add', [FoodController::class, 'addToCart'])->name('food.cart.add');
     Route::post('/food/menu-items/{menuItem}/remove', [FoodController::class, 'removeFromCart'])->name('food.cart.remove');
+
     Route::get('/food/cart', [FoodController::class, 'cart'])->name('food.cart');
     Route::post('/food/cart/checkout', [FoodController::class, 'placeOrder'])->name('food.checkout');
 
-    // Order details
     Route::get('/food/orders/{order}', [FoodController::class, 'showOrder'])->name('food.orders.show');
-
 });
 
 /*
@@ -110,19 +109,16 @@ Route::get('/notes', [NotesController::class, 'index'])->name('notes.view');
 */
 Route::middleware(['auth', 'isAdmin'])->group(function () {
 
-    // Admin Dashboard
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-    // Pending Notes
     Route::get('/admin/notes/pending', [AdminNotesController::class, 'pending'])->name('admin.notes.pending');
 
     Route::post('/admin/notes/{id}/approve', [AdminNotesController::class, 'approve'])->name('admin.notes.approve');
     Route::post('/admin/notes/{id}/reject', [AdminNotesController::class, 'reject'])->name('admin.notes.reject');
 
-    // Admin Rent Deletion
     Route::delete('/admin/rent/{rent}', [RentController::class, 'destroy'])->name('admin.rent.destroy');
 
-    // Admin Food Orders
     Route::get('/admin/food/orders', [FoodController::class, 'adminOrders'])->name('admin.food.orders');
     Route::post('/admin/food/orders/{order}/status', [FoodController::class, 'updateOrderStatus'])->name('admin.food.orders.status');
+
 });

@@ -11,7 +11,7 @@
                 <span class="fw-semibold">Your Credits:</span>
                 {{ $credits }}
             </p>
-            <a href="{{ route('food.cart') }}" class="btn btn-outline-secondary btn-sm">
+            <a href="{{ route('food.cart') }}" class="btn btn-outline-red btn-sm">
                 Cart (₹{{ $cartTotal }})
             </a>
         </div>
@@ -37,14 +37,14 @@
                     @endif
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-1">{{ $item->name }}</h5>
-                        <p class="text-primary fw-bold mb-2">₹{{ number_format($item->price) }}</p>
+                        <p class="text-red-custom fw-bold mb-2">₹{{ number_format($item->price) }}</p>
                         <form action="{{ route('food.cart.add', $item) }}" method="POST" class="mt-auto">
                             @csrf
                             <div class="input-group input-group-sm mb-2" style="max-width: 140px;">
                                 <span class="input-group-text">Qty</span>
                                 <input type="number" name="qty" value="1" min="1" class="form-control">
                             </div>
-                            <button type="submit" class="btn btn-sm btn-warning w-100">
+                            <button type="submit" class="btn btn-sm btn-red w-100">
                                 Add to Cart
                             </button>
                         </form>

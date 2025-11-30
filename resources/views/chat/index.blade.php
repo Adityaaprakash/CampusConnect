@@ -24,10 +24,10 @@
                             </div>
                         </div>
                         <div>
-                            <a href="{{ route('chat.rooms.show', $room) }}" class="btn btn-sm btn-primary">Open</a>
+                            <a href="{{ route('chat.rooms.show', $room) }}" class="btn btn-sm btn-red">Open</a>
                             <form action="{{ route('chat.rooms.leave', $room) }}" method="POST" class="d-inline">
                                 @csrf
-                                <button class="btn btn-sm btn-outline-danger">Leave</button>
+                                <button class="btn btn-sm btn-outline-red">Leave</button>
                             </form>
                         </div>
                     </li>
@@ -42,14 +42,14 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
                             <strong>{{ $room->room_name }}</strong>
-                            <span class="badge bg-success ms-2">Public</span>
+                            <span class="badge ms-2" style="background-color: #dc143c; color: white;">Public</span>
                             <div class="small text-muted">
                                 {{ $room->description }}
                             </div>
                         </div>
                         <form action="{{ route('chat.rooms.join', $room) }}" method="POST" class="d-inline">
                             @csrf
-                            <button class="btn btn-sm btn-outline-primary">Join</button>
+                            <button class="btn btn-sm btn-outline-red">Join</button>
                         </form>
                     </li>
                 @empty
@@ -99,7 +99,7 @@
                     </label>
                 </div>
 
-                <button class="btn btn-primary w-100" type="submit">Create Room</button>
+                <button class="btn btn-red w-100" type="submit">Create Room</button>
             </form>
         </div>
     </div>

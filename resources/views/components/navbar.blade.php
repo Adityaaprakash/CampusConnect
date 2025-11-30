@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #000000; border-bottom: 2px solid #dc143c;">
     <div class="container">
 
-        <a class="navbar-brand fw-bold" href="{{ route('home') }}">CampusConnect</a>
+        <a class="navbar-brand fw-bold" href="{{ route('home') }}" style="color: #dc143c !important; font-size: 1.5rem;">CampusConnect</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -38,10 +38,10 @@
 
                 @guest
                     <li class="nav-item">
-                        <a class="btn btn-primary me-2" href="{{ route('login') }}">Login</a>
+                        <a class="btn btn-outline-red me-2" href="{{ route('login') }}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-success" href="{{ route('register') }}">Register</a>
+                        <a class="btn btn-red" href="{{ route('register') }}">Register</a>
                     </li>
                 @endguest
 
@@ -54,7 +54,7 @@
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button class="btn btn-danger">Logout</button>
+                            <button class="btn btn-red">Logout</button>
                         </form>
                     </li>
                 @endauth

@@ -6,7 +6,7 @@
             <h2 class="mb-0">All Rental Listings</h2>
             <p class="text-muted mb-0">Browse PGs, rooms and flats near campus.</p>
         </div>
-        <a href="{{ route('rent.create') }}" class="btn btn-outline-primary btn-sm">
+        <a href="{{ route('rent.create') }}" class="btn btn-outline-red btn-sm">
             + Add Property
         </a>
     </div>
@@ -19,7 +19,7 @@
                         $image = $property->images->first();
                     @endphp
                     @if ($image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" class="card-img-top"
+                        <img src="{{ str_starts_with($image->image_path, 'http') ? $image->image_path : asset('storage/' . $image->image_path) }}" class="card-img-top"
                             alt="{{ $property->title }}">
                     @else
                         <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg" class="card-img-top"
@@ -27,13 +27,13 @@
                     @endif
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title mb-1">{{ $property->title }}</h5>
-                        <p class="text-primary fw-bold mb-1">₹{{ number_format($property->rent) }}/month</p>
+                        <p class="text-red-custom fw-bold mb-1">₹{{ number_format($property->rent) }}/month</p>
                         <p class="text-muted small mb-2">{{ $property->location }}</p>
                         <p class="small mb-2">
                             <span class="fw-semibold">Owner:</span>
                             {{ $property->owner_name }}
                         </p>
-                        <a href="{{ route('rent.show', $property) }}" class="btn btn-outline-primary mt-auto">
+                        <a href="{{ route('rent.show', $property) }}" class="btn btn-outline-red mt-auto">
                             View Details
                         </a>
                     </div>

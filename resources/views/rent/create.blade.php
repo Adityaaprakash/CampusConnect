@@ -115,7 +115,7 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
+                        <button type="submit" class="btn btn-red w-100">
                             Submit Listing
                         </button>
                     </form>

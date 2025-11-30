@@ -8,7 +8,7 @@
                     $mainImage = $property->images->first();
                 @endphp
                 @if ($mainImage)
-                    <img src="{{ asset('storage/' . $mainImage->image_path) }}" class="card-img-top"
+                    <img src="{{ str_starts_with($mainImage->image_path, 'http') ? $mainImage->image_path : asset('storage/' . $mainImage->image_path) }}" class="card-img-top"
                         alt="{{ $property->title }}">
                 @else
                     <img src="https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg" class="card-img-top"
@@ -23,7 +23,7 @@
                         <p class="text-muted mb-2">{{ $property->location }}</p>
                     @endif
 
-                    <p class="h5 text-primary mb-2">₹{{ number_format($property->rent) }}/month</p>
+                    <p class="h5 text-red-custom mb-2">₹{{ number_format($property->rent) }}/month</p>
 
                     @if ($property->deposit)
                         <p class="mb-2">
@@ -35,7 +35,7 @@
                     <p class="mb-2">
                         <span class="fw-semibold">Availability:</span>
                         <span
-                            class="badge {{ $property->availability_status === 'available' ? 'bg-success' : 'bg-secondary' }}">
+                            class="badge" style="{{ $property->availability_status === 'available' ? 'background-color: #dc143c; color: white;' : 'background-color: #666; color: white;' }}">
                             {{ ucfirst($property->availability_status) }}
                         </span>
                     </p>
@@ -45,7 +45,7 @@
                         <h5>Amenities</h5>
                         <ul class="list-inline mb-2">
                             @foreach ($amenities as $amenity)
-                                <li class="list-inline-item badge bg-light text-dark border">
+                                <li class="list-inline-item badge" style="background-color: rgba(220, 20, 60, 0.2); color: #dc143c; border: 1px solid rgba(220, 20, 60, 0.5);">
                                     {{ $amenity }}
                                 </li>
                             @endforeach
@@ -68,7 +68,7 @@
                         <div class="row g-2">
                             @foreach ($property->images as $image)
                                 <div class="col-4 col-md-3">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Photo"
+                                    <img src="{{ str_starts_with($image->image_path, 'http') ? $image->image_path : asset('storage/' . $image->image_path) }}" alt="Photo"
                                         class="img-fluid rounded">
                                 </div>
                             @endforeach
@@ -91,7 +91,7 @@
                         <a href="tel:{{ $property->phone }}">{{ $property->phone }}</a>
                     </p>
 
-                    <a href="tel:{{ $property->phone }}" class="btn btn-primary w-100 mb-2">
+                    <a href="tel:{{ $property->phone }}" class="btn btn-red w-100 mb-2">
                         Call Owner
                     </a>
                 </div>
@@ -106,7 +106,7 @@
                                 onsubmit="return confirm('Are you sure you want to delete this property?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger w-100">
+                                <button type="submit" class="btn btn-outline-red w-100">
                                     Delete Property
                                 </button>
                             </form>

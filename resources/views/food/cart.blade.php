@@ -31,7 +31,7 @@
                                     <div class="fw-bold mb-1">₹{{ $row['qty'] * $row['price'] }}</div>
                                     <form action="{{ route('food.cart.remove', $row['menu_item_id']) }}" method="POST">
                                         @csrf
-                                        <button class="btn btn-sm btn-outline-danger">Remove</button>
+                                        <button class="btn btn-sm btn-outline-red">Remove</button>
                                     </form>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@
                                 <input type="number" name="credits_to_use" class="form-control" min="0"
                                     max="{{ min($credits, $cartTotal) }}" value="{{ min($credits, $cartTotal) }}">
                             </div>
-                            <button type="submit" class="btn btn-warning w-100">
+                            <button type="submit" class="btn btn-red w-100">
                                 Place Order
                             </button>
                         </form>
