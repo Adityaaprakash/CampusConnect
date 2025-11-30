@@ -7,53 +7,113 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# CampusConnect 🎓  
+A platform built for university students to simplify campus life by providing a unified system for communication, notes sharing, property rentals, and food ordering.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📌 About the Project
+CampusConnect is a full-stack web application designed to streamline student activities inside a university campus.  
+The platform helps students connect, collaborate, access study materials, find accommodation, and even order food from campus canteens — all in one place.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🚀 Features Implemented So Far
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### ⭐ 1. Chat Room System
+- Students can join **public and private chat rooms**.
+- Real-time messaging using events and Laravel broadcasting.
+- Clean UI for chat interactions.
+- Chatroom membership stored and handled through database models.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+### ⭐ 2. Notes Section
+- Notes are organized **department-wise**.
+- Students can upload notes and earn **credits**.
+- Admin approval flow:
+  - Students upload notes
+  - Admin views pending notes
+  - Admin approves/rejects notes
+- Credits awarded on approval.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+(Current credit reward: **50 credits per approved property upload**.)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### ⭐ 3. Rent / Property Section
+- Hero-banner style UI for property listings.
+- Students and admins can **add new properties**.
+- Admins can delete listings.
+- Students can browse available PGs/rooms with images.
+- Each listing supports multiple property images.
+- Property uploader earns **50 credits per listing**.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### ⭐ 4. Food Ordering System
+- Students can browse campus canteen outlets.
+- View menu items with price.
+- Add items to cart.
+- Place orders directly inside the app.
+- Admin/outlet owners can view all orders.
+- Students can track order status.
+- Credit-based discount system support.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🧩 Tech Stack
+- **Laravel 10** (Backend)
+- **Blade Templates** (Frontend)
+- **MySQL** (Database)
+- **Pusher / Laravel Broadcasting** (Chat system)
+- **Bootstrap** (Frontend UI)
+- **JavaScript** (Interactions)
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📁 Project Structure (Important Folders)
 
-## License
+app/
+├─ Http/Controllers/ -> All controllers for chat, rent, food, auth, notes
+├─ Models/ -> Chat, Notes, Rent, FoodOrder, Message, etc.
+├─ Events/ -> Real-time message event
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+database/
+├─ migrations/ -> Full DB schema for all features
+
+resources/views/
+├─ chat/ -> Chat UI
+├─ notes/ -> Notes upload + view
+├─ rent/ -> Rent pages
+├─ food/ -> Food ordering interface
+├─ layouts/ -> App structure
+
+yaml
+Copy code
+
+---
+
+## 🏆 Credit System (Updated Rules)
+- Uploading a **property listing** → **+50 credits**
+- Uploading **notes** (on approval) → **credits awarded**
+- Credits can be used for food ordering discounts.
+
+---
+
+## 🛠️ Features Planned / Coming Soon
+- Profile system
+- Payment gateway (optional)
+- Push notifications
+- Live typing indicator in chat
+- Improved admin dashboard
+
+---
+
+## 🤝 Contributing
+Feel free to fork the repo and submit pull requests!
+
+---
+
+## 📬 Contact
+Created by **Aditya Prakash**  
